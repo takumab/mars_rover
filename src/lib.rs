@@ -14,12 +14,34 @@
 // actions = move forward, turn right, turn left
 // outputs = final position and direction
 
+pub struct Rover {
+    x: i32,
+    y: i32,
+    cardinal: char,
+}
+
+impl Rover {
+    pub fn new() -> Self {
+        Self {
+            x: 0,
+            y: 0,
+            cardinal: 'N',
+        }
+    }
+
+    pub fn execute(&self, _commands: &str) -> String {
+        String::from("0 0 N")
+    }
+}
 
 #[cfg(test)]
 mod tests {
+    use super::*;
 
     #[test]
-    fn it_smoke_test() {
-        assert_eq!(2+2, 4);
+    fn should_have_initial_coordinates_of_0_0_facing_north() {
+        let rover = Rover::new();
+        let result = rover.execute("");
+        assert_eq!(result, "0 0 N");
     }
 }
