@@ -54,6 +54,7 @@ mod tests {
     #[case::turn_right_to_cardinal_east("R", String::from("0:0:E"))]
     #[case::turn_right_to_cardinal_south("RR", String::from("0:0:S"))]
     #[case::turn_right_to_cardinal_west("RRR", String::from("0:0:W"))]
+    #[case::turn_right_to_cardinal_north("RRRR", String::from("0:0:N"))]
     fn should_execute(#[case] commands: &str, #[case] expected: String) {
         let rover = Rover::new();
         let result = rover.execute(commands);
