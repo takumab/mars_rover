@@ -14,6 +14,8 @@
 // actions = move forward, turn right, turn left
 // outputs = final position and direction
 
+use std::fmt::format;
+
 pub struct Rover {
     x: i32,
     y: i32,
@@ -29,19 +31,28 @@ impl Rover {
         }
     }
 
-    pub fn execute(&self, _commands: &str) -> String {
-        String::from("0 0 N")
+    pub fn execute(&self, commands: &str) -> String {
+        let cardinal = if commands == "R" {
+             'E'
+        } else {
+            'N'
+        };
+
+        format!("0:0:{}", cardinal)
     }
 }
 
 #[cfg(test)]
 mod tests {
+    use rstest::rstest;
     use super::*;
 
-    #[test]
-    fn should_have_initial_coordinates_of_0_0_facing_north() {
+    #[rstest]
+    #[case::initial_coordinates_of_0_0_facing_north("", String::from("0:0:N"))]
+    #[case::turn_right_to_cardinal_east("R", String::from("0:0:E"))]
+    fn should_execute(#[case] commands: &str, #[case] expected: String) {
         let rover = Rover::new();
-        let result = rover.execute("");
-        assert_eq!(result, "0 0 N");
+        let result = rover.execute(commands);
+        assert_eq!(result, expected);
     }
 }
