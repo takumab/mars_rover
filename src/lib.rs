@@ -29,18 +29,23 @@ impl Rover {
         }
     }
 
-    pub fn execute(&self, commands: &str) -> String {
-        let cardinal = if commands == "R" {
-            'E'
-        } else if commands == "RR" {
-            'S'
-        } else if commands == "RRR" {
-            'W'
-        } else {
-            'N'
-        };
+    pub fn execute(&mut self, commands: &str) -> String {
+        for command in commands.chars() {
+            match command {
+                'R' => {
+                    self.cardinal = match self.cardinal {
+                        'N' => 'E',
+                        'E' => 'S',
+                        'S' => 'W',
+                        'W' => 'N',
+                        _ => todo!(),
+                    }
+                }
+                _ => todo!(),
+            }
+        }
 
-        format!("0:0:{}", cardinal)
+        format!("0:0:{}", self.cardinal)
     }
 }
 
@@ -56,7 +61,7 @@ mod tests {
     #[case::turn_right_to_cardinal_west("RRR", String::from("0:0:W"))]
     #[case::turn_right_to_cardinal_north("RRRR", String::from("0:0:N"))]
     fn should_execute(#[case] commands: &str, #[case] expected: String) {
-        let rover = Rover::new();
+        let mut rover = Rover::new();
         let result = rover.execute(commands);
         assert_eq!(result, expected);
     }
