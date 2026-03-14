@@ -14,10 +14,29 @@
 // actions = move forward, turn right, turn left
 // outputs = final position and direction
 
+use std::fmt::Display;
+
 pub struct Rover {
     x: i32,
     y: i32,
-    cardinal: char,
+    cardinal: Cardinal,
+}
+enum Cardinal {
+    North,
+    South,
+    East,
+    West,
+}
+impl Display for Cardinal {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let cardinal_str = match self {
+            Cardinal::North => "N",
+            Cardinal::South => "S",
+            Cardinal::East => "E",
+            Cardinal::West => "W",
+        };
+        write!(f, "{}", cardinal_str)
+    }
 }
 
 impl Rover {
@@ -25,7 +44,7 @@ impl Rover {
         Self {
             x: 0,
             y: 0,
-            cardinal: 'N',
+            cardinal: Cardinal::North,
         }
     }
 
@@ -34,11 +53,10 @@ impl Rover {
             match command {
                 'R' => {
                     self.cardinal = match self.cardinal {
-                        'N' => 'E',
-                        'E' => 'S',
-                        'S' => 'W',
-                        'W' => 'N',
-                        _ => todo!(),
+                        Cardinal::North => Cardinal::East,
+                        Cardinal::East => Cardinal::South,
+                        Cardinal::South => Cardinal::West,
+                        Cardinal::West => Cardinal::North,
                     }
                 }
                 _ => todo!(),
