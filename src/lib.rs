@@ -49,10 +49,6 @@ impl Rover {
     }
 
     pub fn execute(&mut self, commands: &str) -> String {
-        if commands == "M" {
-            return format!("{}:{}:{}", self.x, self.y + 1, self.cardinal);
-        }
-
         for command in commands.chars() {
             match command {
                 'R' => {
@@ -71,11 +67,17 @@ impl Rover {
                         Cardinal::East => Cardinal::North,
                     }
                 }
+                'M' => {
+                    match self.cardinal {
+                        Cardinal::North => self.y += 1,
+                        _ => todo!(),
+                    }
+                }
                 _ => todo!(),
             }
         }
 
-        format!("0:0:{}", self.cardinal)
+        format!("0:{}:{}", self.y, self.cardinal)
     }
 }
 
@@ -109,6 +111,7 @@ mod tests {
     }
     #[rstest]
     #[case::move_forward_once("M", String::from("0:1:N"))]
+    #[case::move_forward_once("MM", String::from("0:2:N"))]
     fn should_execute_move(#[case] commands: &str, #[case] expected: String) {
         let mut rover = Rover::new();
         let result = rover.execute(commands);
