@@ -62,6 +62,7 @@ impl Rover {
                 'L' => {
                     self.cardinal = match self.cardinal {
                         Cardinal::North => Cardinal::West,
+                        Cardinal::West => Cardinal::South,
                         _ => todo!(),
                     }
                 }
@@ -92,6 +93,7 @@ mod tests {
 
     #[rstest]
     #[case::rotate_west("L", String::from("0:0:W"))]
+    #[case::rotate_south("LL", String::from("0:0:S"))]
     fn should_rotate_left(#[case] commands: &str, #[case] expected: String) {
         let mut rover = Rover::new();
         let result = rover.execute(commands);
