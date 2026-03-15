@@ -49,6 +49,10 @@ impl Rover {
     }
 
     pub fn execute(&mut self, commands: &str) -> String {
+        if commands == "M" {
+            return format!("{}:{}:{}", self.x, self.y + 1, self.cardinal);
+        }
+
         for command in commands.chars() {
             match command {
                 'R' => {
@@ -65,7 +69,6 @@ impl Rover {
                         Cardinal::West => Cardinal::South,
                         Cardinal::South => Cardinal::East,
                         Cardinal::East => Cardinal::North,
-                        _ => todo!(),
                     }
                 }
                 _ => todo!(),
@@ -87,7 +90,7 @@ mod tests {
     #[case::turn_right_to_cardinal_south("RR", String::from("0:0:S"))]
     #[case::turn_right_to_cardinal_west("RRR", String::from("0:0:W"))]
     #[case::turn_right_to_cardinal_north("RRRR", String::from("0:0:N"))]
-    fn should_execute(#[case] commands: &str, #[case] expected: String) {
+    fn should_execute_right_rotation(#[case] commands: &str, #[case] expected: String) {
         let mut rover = Rover::new();
         let result = rover.execute(commands);
         assert_eq!(result, expected);
@@ -99,7 +102,14 @@ mod tests {
     #[case::rotate_east("LLL", String::from("0:0:E"))]
     #[case::rotate_east("LLLL", String::from("0:0:N"))]
     #[case::rotate_east("LLLLL", String::from("0:0:W"))]
-    fn should_rotate_left(#[case] commands: &str, #[case] expected: String) {
+    fn should_execute_left_rotation(#[case] commands: &str, #[case] expected: String) {
+        let mut rover = Rover::new();
+        let result = rover.execute(commands);
+        assert_eq!(result, expected);
+    }
+    #[rstest]
+    #[case::move_forward_once("M", String::from("0:1:N"))]
+    fn should_execute_move(#[case] commands: &str, #[case] expected: String) {
         let mut rover = Rover::new();
         let result = rover.execute(commands);
         assert_eq!(result, expected);
