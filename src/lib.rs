@@ -70,6 +70,7 @@ impl Rover {
                 'M' => {
                     match self.cardinal {
                         Cardinal::North => self.y += 1,
+                        Cardinal::South => self.y -= 1,
                         _ => todo!(),
                     }
                 }
@@ -113,6 +114,7 @@ mod tests {
     #[case::move_forward_once("M", String::from("0:1:N"))]
     #[case::move_forward_once("MM", String::from("0:2:N"))]
     #[case::move_forward_once("MMM", String::from("0:3:N"))]
+    #[case::move_forward_once("RRM", String::from("0:-1:S"))]
     fn should_execute_move(#[case] commands: &str, #[case] expected: String) {
         let mut rover = Rover::new();
         let result = rover.execute(commands);
