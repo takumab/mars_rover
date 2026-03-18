@@ -71,14 +71,15 @@ impl Rover {
                     match self.cardinal {
                         Cardinal::North => self.y += 1,
                         Cardinal::South => self.y -= 1,
-                        _ => todo!(),
+                        Cardinal::East => self.x += 1,
+                        Cardinal::West => self.x -= 1,
                     }
                 }
                 _ => todo!(),
             }
         }
 
-        format!("0:{}:{}", self.y, self.cardinal)
+        format!("{}:{}:{}", self.x, self.y, self.cardinal)
     }
 }
 
@@ -103,8 +104,8 @@ mod tests {
     #[case::rotate_west("L", String::from("0:0:W"))]
     #[case::rotate_south("LL", String::from("0:0:S"))]
     #[case::rotate_east("LLL", String::from("0:0:E"))]
-    #[case::rotate_east("LLLL", String::from("0:0:N"))]
-    #[case::rotate_east("LLLLL", String::from("0:0:W"))]
+    #[case::rotate_north("LLLL", String::from("0:0:N"))]
+    #[case::rotate_west("LLLLL", String::from("0:0:W"))]
     fn should_execute_left_rotation(#[case] commands: &str, #[case] expected: String) {
         let mut rover = Rover::new();
         let result = rover.execute(commands);
@@ -112,9 +113,11 @@ mod tests {
     }
     #[rstest]
     #[case::move_forward_once("M", String::from("0:1:N"))]
-    #[case::move_forward_once("MM", String::from("0:2:N"))]
-    #[case::move_forward_once("MMM", String::from("0:3:N"))]
-    #[case::move_forward_once("RRM", String::from("0:-1:S"))]
+    #[case::move_forward_twice("MM", String::from("0:2:N"))]
+    #[case::move_forward_thrice("MMM", String::from("0:3:N"))]
+    #[case::move_forward_rotate_south("RRM", String::from("0:-1:S"))]
+    #[case::move_forward_rotate_east("RM", String::from("1:0:E"))]
+    #[case::move_forward_rotate_west("RRRM", String::from("-1:0:W"))]
     fn should_execute_move(#[case] commands: &str, #[case] expected: String) {
         let mut rover = Rover::new();
         let result = rover.execute(commands);
