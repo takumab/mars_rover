@@ -123,4 +123,18 @@ mod tests {
         let result = rover.execute(commands);
         assert_eq!(result, expected);
     }
+
+    #[test]
+    fn should_execute_moves_and_rotate() {
+        let mut rover = Rover::new();
+        let result = rover.execute("RMMLM");
+        assert_eq!(result, String::from("2:1:N"));
+    }
+
+    #[test]
+    fn should_have_final_position_of_3_2_s() {
+        let mut rover = Rover::new();
+        let result = rover.execute("RMMMLMMRR");
+        assert_eq!(result, String::from("3:2:S"));
+    }
 }
