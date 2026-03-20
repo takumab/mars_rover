@@ -27,6 +27,8 @@ enum Cardinal {
     East,
     West,
 }
+
+
 impl Display for Cardinal {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let cardinal_str = match self {
@@ -51,35 +53,40 @@ impl Rover {
     pub fn execute(&mut self, commands: &str) -> String {
         for command in commands.chars() {
             match command {
-                'R' => {
-                    self.cardinal = match self.cardinal {
-                        Cardinal::North => Cardinal::East,
-                        Cardinal::East => Cardinal::South,
-                        Cardinal::South => Cardinal::West,
-                        Cardinal::West => Cardinal::North,
-                    }
-                }
-                'L' => {
-                    self.cardinal = match self.cardinal {
-                        Cardinal::North => Cardinal::West,
-                        Cardinal::West => Cardinal::South,
-                        Cardinal::South => Cardinal::East,
-                        Cardinal::East => Cardinal::North,
-                    }
-                }
-                'M' => {
-                    match self.cardinal {
-                        Cardinal::North => self.y += 1,
-                        Cardinal::South => self.y -= 1,
-                        Cardinal::East => self.x += 1,
-                        Cardinal::West => self.x -= 1,
-                    }
-                }
+                'R' => self.turn_right(),
+                'L' => self.turn_left(),
+                'M' => self.move_forward(),
                 _ => todo!(),
             }
         }
 
         format!("{}:{}:{}", self.x, self.y, self.cardinal)
+    }
+
+    fn move_forward(&mut self) {
+        match self.cardinal {
+            Cardinal::North => self.y += 1,
+            Cardinal::South => self.y -= 1,
+            Cardinal::East => self.x += 1,
+            Cardinal::West => self.x -= 1,
+        }
+    }
+
+    fn turn_right(&mut self) {
+        self.cardinal = match self.cardinal {
+            Cardinal::North => Cardinal::East,
+            Cardinal::East => Cardinal::South,
+            Cardinal::South => Cardinal::West,
+            Cardinal::West => Cardinal::North,
+        }
+    }
+    fn turn_left(&mut self) {
+        self.cardinal = match self.cardinal {
+            Cardinal::North => Cardinal::West,
+            Cardinal::West => Cardinal::South,
+            Cardinal::South => Cardinal::East,
+            Cardinal::East => Cardinal::North,
+        }
     }
 }
 
