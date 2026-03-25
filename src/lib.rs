@@ -16,18 +16,12 @@
 
 use std::fmt::Display;
 
-pub struct Rover {
-    x: i32,
-    y: i32,
-    cardinal: Cardinal,
-}
 enum Cardinal {
     North,
     South,
     East,
     West,
 }
-
 
 impl Display for Cardinal {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -39,6 +33,12 @@ impl Display for Cardinal {
         };
         write!(f, "{}", cardinal_str)
     }
+}
+
+pub struct Rover {
+    x: i32,
+    y: i32,
+    cardinal: Cardinal,
 }
 
 impl Rover {
