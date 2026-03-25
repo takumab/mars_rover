@@ -16,6 +16,25 @@
 
 use std::fmt::Display;
 
+enum Command {
+    MoveForward,
+    TurnRight,
+    TurnLeft,
+}
+
+impl TryFrom<char> for Command {
+    type Error = ();
+
+    fn try_from(value: char) -> Result<Self, Self::Error> {
+        match value {
+            'M' => Ok(Command::MoveForward),
+            'R' => Ok(Command::TurnRight),
+            'L' => Ok(Command::TurnLeft),
+            _ => Err(()),
+        }
+    }
+}
+
 enum Cardinal {
     North,
     South,
@@ -52,11 +71,11 @@ impl Rover {
 
     pub fn execute(&mut self, commands: &str) -> String {
         for command in commands.chars() {
-            match command {
-                'R' => self.turn_right(),
-                'L' => self.turn_left(),
-                'M' => self.move_forward(),
-                _ => todo!(),
+            match Command::try_from(command) {
+                Ok(Command::TurnRight) => self.turn_right(),
+                Ok(Command::TurnLeft) => self.turn_left(),
+                Ok(Command::MoveForward) => self.move_forward(),
+                Err(e) => return format!("{:?}", e),
             }
         }
 
