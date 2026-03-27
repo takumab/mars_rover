@@ -79,6 +79,7 @@ impl Rover {
             }
         }
 
+        println!("checking x: {}", self.x);
         format!("{}:{}:{}", self.x, self.y, self.cardinal)
     }
 
@@ -86,7 +87,13 @@ impl Rover {
         match self.cardinal {
             Cardinal::North => self.y += 1,
             Cardinal::South => self.y -= 1,
-            Cardinal::East => self.x += 1,
+            Cardinal::East => {
+                if self.x >= 10 {
+                    self.x = 0;
+                } else {
+                    self.x += 1
+                }
+            }
             Cardinal::West => self.x -= 1,
         }
     }
@@ -162,5 +169,12 @@ mod tests {
         let mut rover = Rover::new();
         let result = rover.execute("RMMMLMMRR");
         assert_eq!(result, String::from("3:2:S"));
+    }
+
+    #[test]
+    fn should_wrap_around_x_axis() {
+        let mut rover = Rover::new();
+        let result = rover.execute("RMMMMMMMMMMM");
+        assert_eq!(result, String::from("0:0:E"));
     }
 }
