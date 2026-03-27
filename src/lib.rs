@@ -79,7 +79,6 @@ impl Rover {
             }
         }
 
-        println!("checking x: {}", self.x);
         format!("{}:{}:{}", self.x, self.y, self.cardinal)
     }
 
