@@ -155,7 +155,7 @@ mod tests {
     #[case::move_forward_thrice("MMM", String::from("0:3:N"))]
     #[case::move_forward_rotate_south("RRM", String::from("0:-1:S"))]
     #[case::move_forward_rotate_east("RM", String::from("1:0:E"))]
-    #[case::move_forward_rotate_west("RRRM", String::from("-1:0:W"))]
+    #[case::move_forward_rotate_west("RRRMM", String::from("9:0:W"))]
     fn should_execute_move(#[case] commands: &str, #[case] expected: String) {
         let mut rover = Rover::new();
         let result = rover.execute(commands);
