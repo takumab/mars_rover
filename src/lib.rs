@@ -93,7 +93,13 @@ impl Rover {
                     self.x += 1
                 }
             }
-            Cardinal::West => self.x -= 1,
+            Cardinal::West => {
+                if self.x < 0 {
+                    self.x = 9;
+                } else {
+                    self.x -= 1;
+                }
+            }
         }
     }
 
@@ -175,5 +181,11 @@ mod tests {
         let mut rover = Rover::new();
         let result = rover.execute("RMMMMMMMMMMM");
         assert_eq!(result, String::from("0:0:E"));
+    }
+    #[test]
+    fn should_wrap_around_x_axis_facing_west() {
+        let mut rover = Rover::new();
+        let result = rover.execute("LMM");
+        assert_eq!(result, String::from("9:0:W"));
     }
 }
